@@ -34,19 +34,20 @@ class Asistente(models.TransientModel):
             #raise osv.except_osv(('Error'), ('El suplente ya es titular'))
             return {
                     'type': 'ir.actions.client',
-                    'tag': 'action_warn',
+                    'tag': 'action_info',
                     'name': 'Warning',
                     'params': {
                         'title': 'Atención!!!!!!',
                         'text': 'El suplente ya está de alta como titular',
-                        'sticky': True
+                        'sticky': False
                         }
                     }
-            print "Duplicado!!!"
         else:
             print "No duplicado"
-            #self.titular_id.estado = 'R'
-            #self.suplente_id.estado = 'T'
+            self.suplente_id.id_comision = self.titular_id.id_comision
+            self.titular_id.id_comision = 5
+            self.titular_id.estado = 'R'
+            self.suplente_id.estado = 'T'
 #        print self.suplente_id.estado
 #       titular_id = self.env.context.get('active_id', False)
 #       print 'Active_id: ', titular_id

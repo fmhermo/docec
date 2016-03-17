@@ -38,6 +38,15 @@ class delegado(models.Model):
                 'target': 'new',
                 }
         
+    @api.onchange('id_comision')
+    def _comprueba_comision(self):
+        comision = self.id_comision.id
+        organismo = self.id_organismo.id
+        if comision == 1:
+            permitidos = self.env['docec.organismo'].browse([organismo]).miembrosc1
+        asignados = self.env['docec.delegado'].search(([('id_comision','=',comision),('id_organismo','=',organismo)]))
+        print "Cambio!! Asignados:", len(asignados)
+        
 class organismo(models.Model):
     _name = 'docec.organismo'
     nomOrganismo = fields.Char('Organismo')

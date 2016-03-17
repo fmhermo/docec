@@ -1,0 +1,54 @@
+<openerp>
+	<data>
+		<record id="view_wizard_sustituir_delegado" model="ir.ui.view">
+        	<field name="name">Sustituir Delegado</field>
+            <field name="model">ugtdoc.sustituir_delegado_wizard</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<h3>Opciones generales</h3>
+                    	<group colspan="4" col="4">                        
+                        <group colspan="2">
+                            <field name="tipo_documento_id" context="{'user_change_value': True}"  />
+                        </group>
+                        
+                        <group colspan="2">
+                            <field name="columnas_visibles_id" domain="[('create_uid', '=', uid)]"/>
+                        </group>
+                     </group>
+                     
+                     <h3>Datos del documento</h3>
+                     <group colspan="4" col="4"> 
+                        <group colspan="2">
+                            <field name="empresa_id" />
+                            <field name="archivos" />
+                            <field name="relacionados" />
+                        </group>
+                        
+                        <group colspan="2">
+                            <field name="pagos_pendientes" />
+                            <field name="sin_completar" />
+                            <field name="bloqueados" />
+                        </group>
+
+                    </group>
+                    
+                    <h3>Referencias</h3>                    
+                    
+                                        <footer>
+                                                <button type="object" name="buscar" string="Buscar" class="oe_highlight" />
+                                                <button type="object" name="exportar" string="Exportar" class="oe_highlight" />
+                        <button special="cancel" string="Cancelar" />
+                        <button type="object" name="limpiar" string="Limpiar" />
+                                        </footer>
+                                </form>
+                        </field>
+                </record>
+
+                <act_window id="action_wizard_buscar_documento" name="Buscar documento"
+                        res_model="ugtdoc.buscar_documento_wizard" view_mode="form" target="new" />
+
+                <menuitem action="action_wizard_buscar_documento" id="menu_wizard_buscar_documento"
+                        parent="ugtdoc_menu" sequence="2" />
+
+        </data>
+</openerp>

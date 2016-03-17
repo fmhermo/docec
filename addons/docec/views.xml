@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+	<data>
+		<record id="delegado_action" model="ir.actions.act_window">
+			<field name="name">Listado de delegados</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">docec.delegado</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p>Búsqueda de delegados</p>
+			</field>
+		</record>
+
+		<record id="organismo_action" model="ir.actions.act_window">
+			<field name="name">Listado de organismos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">docec.organismo</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p>Búsqueda de organismos</p>
+			</field>
+		</record>
+		<record id="comision_action" model="ir.actions.act_window">
+			<field name="name">Listado de Comisiones</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">docec.comision</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p>Búsqueda de comisiones</p>
+			</field>
+		</record>
+		<record id="view_delegado_search" model="ir.ui.view">
+            <field name="name">view.delegado.search</field>
+            <field name="model">docec.delegado</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+            	<search string="Titsup">
+           	  	<group string="Titulares">
+                	<field name="nomDelegado" string="Nombre"/>
+                    <filter string="Titular" domain="[('estado','=','T')]"/>
+                  	<field name="estado" string="Tit/Sup" attrs="{'readonly': [('nomDelegado','!=', '')]}"/>
+					<field name="id_organismo" string="Organismo"/>
+				</group>
+				</search>					
+            </field>
+        </record>
+        <record id="view_delegado_tree" model="ir.ui.view">
+            <field name="name">view.delegado.tree</field>
+            <field name="model">docec.delegado</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Delegados" editable="top">
+           	  		<field name="material" string="Entrega de Material" attrs="{'invisible': [('estado','!=', 'T')]}"/>
+  					<field name="acreditado" string="Acreditado" attrs="{'readonly': [('estado','!=', '')], 'invisible': [('estado','!=', 'T')]}"/>
+                	<field name="nomDelegado" string="Nombre" attrs="{'readonly': [('nomDelegado','!=', '')]}"/>
+                    <field name="id_comision" string="Comisión" attrs="{'invisible': [('estado','!=', 'T')]}"/>	                	
+           	        <field name="id_organismo" string="Organismo" attrs="{'readonly': [('nomDelegado','!=', '')]}"/>
+                  	<field name="estado" string="Tit/Sup" attrs="{'readonly': [('nomDelegado','!=', '')]}"/>
+					<button type="object" name="acreditar" string="Acreditar" attrs="{'invisible': [('estado','!=', 'T')]}"/>                  	
+					<button type="object" name="sustituir" string="Sustituir" attrs="{'invisible': ['|',('acreditado','=', True),('estado','!=','T')]}"/>
+                </tree>
+            </field>
+        </record>
+<!--        <record id="suplente_tree_wiz" model="ir.ui.view">
+        	<field name="model">docec.delegado</field>
+        	<field eval="4" name="priority"/>
+			<field name="arch" type="xml">
+				<tree string="Suplentes" editable="top">
+					<field name="nomDelegado" string="Nombre"/>
+					<field name="id_organismo" string="Organismo"/>
+					<field name="estado" string="Tit/Sup"/>
+				</tree>
+			</field>			 
+        </record>  -->
+
+    <!--    <act_window name="Sustituir" context="{'accion_sustituir': active_ids}"
+            id="docec_delegado_sustituye_action" multi="False"
+            res_model="docec.delegado" src_model="docec.delegado" /> -->
+        
+        <record id="view_organismo_tree" model="ir.ui.view">
+            <field name="name">view.organismo.tree</field>
+            <field name="model">docec.organismo</field>
+            <field name="arch" type="xml">
+                <tree string="Organismos">
+                    <field name="nomOrganismo" string="Organismo"/>
+           	        <field name="titulares" string="Titulares"/>
+                  	<field name="suplentes" string="Suplentes"/>
+                  	<field name="miembrosc1" string="Comisión 1"/>
+                  	<field name="miembrosc2" string="Comisión 2"/>
+                  	<field name="miembrosc3" string="Comisión 3"/>
+                  	<field name="miembrosc4" string="Comisión 4"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_delegado_form" model="ir.ui.view">
+        	<field name="name">delegado.form</field>
+        	<field name="model">docec.delegado</field>
+        	<field name="type">form</field>
+        	<field name="arch" type="xml">
+        		<form string="Ficha">
+        			<sheet>
+        				<h1><field name="nomDelegado" string="Nombre"/></h1>
+        				<group>
+							<field name="dni" string="DNI"/>
+    		       	        <field name="estado" string="Titular/Suplente"/>
+           			        <field name="sexo" string="Sexo"/>
+							<field name="antiguedad" string="Antigüedad"/>           	        
+           	        		<field name="orden" string="Orden"/>
+           	        		<field name="id_organismo" string="Organismo"/>
+                    		<field name="id_comision" string="Comisión"/>
+							<field name="id_org2" string="Org. Secundario"/>
+                    		<field name="material" string="Entrega de Material"/>
+                    		
+<!--    		       	        <field name="id_org2">
+    		       	        	<tree string="Organismo aux" editable="bottom">
+    		       	        		<field name='nomOrganismo'/>
+    		       	        	</tree> 
+    		       	        </field>-->
+        				</group>
+        			</sheet>
+        		</form>
+        	</field>
+        </record>
+        <record id="view_organismo_form" model="ir.ui.view">
+        	<field name="name">organismo.form</field>
+        	<field name="model">docec.organismo</field>
+        	<field name="type">form</field>
+        	<field name="arch" type="xml">
+        		<form string="Organismo">
+        			<sheet>
+        				<h1><field name="nomOrganismo" string="Organismo"/></h1>
+        				<group>
+        				<field name="titulares" string="Titulares"/>
+        				<field name="suplentes" string="Suplentes"/>
+        				<field name="miembrosc1" string="Comisión 1"/>
+						<field name="miembrosc2" string="Comisión 2"/>
+						<field name="miembrosc3" string="Comisión 3"/>
+						<field name="miembrosc4" string="Comisión 4"/>      				
+       			</group></sheet>
+        		</form>
+        	</field>
+        </record>
+
+
+		    	   
+    <!-- Menú superior -->
+	<menuitem id="main_docec_menu" name="UGT Galicia"/>
+	<!-- Menú lateral sin acciones -->
+	<menuitem id="docec_menu" name="12º Congreso" parent="main_docec_menu"/>
+	<!-- Menús de las diferentes vistas -->
+	<menuitem id="delegados_listado" name="Delegados" parent="docec_menu" action="delegado_action"/>
+	<menuitem id="comisiones_listado" name="Comisiones" parent="docec_menu" action="comision_action"/>
+<!--    <menuitem id="asigna_comisiones_asistente" action="asistente_comision" 
+                        parent="docec_menu"/>  -->
+			
+<!--	<menuitem id="delegadosT_listado" name="Titulares" parent="docec_menu" action="delegadoT_action"/>	<menuitem id="organismos_listado" name="Organismos" parent="docec_menu" action="organismo_action"/>
+	-->
+
+      <record model="ir.ui.view" id="vista_asistente">
+        	<field name="name">wizard.formulario</field>
+        	<field name="model">docec.asistente</field>
+        	<field name="arch" type="xml">
+        		<form string="Sustituir delegado">
+        			<group>
+        				<field name="titular_id" options="{'no_open': True}"/>
+        				
+						<field name="organismo" options="{'no_open': True}"/>
+    <!--					<field name="suplente_id" context="{'tree_view_ref': 'docec.suplente_tree_wiz'}"/> -->
+						<field name="suplente_id" widget="selection"/>
+        			</group>
+        		<footer>
+       				<button type="object" name="sustituir" string="Sustituir" class="oe_highlight" />
+       		        <button special="cancel" string="Cancelar" />
+                    <button type="object" name="limpiar" string="Limpiar" />
+       			</footer>
+        		</form>
+        	</field>
+        </record>
+<!--		    <act_window id="asistente_sustituir"
+            name="Pasar a suplente"
+            src_model="docec.delegado"
+            res_model="docec.asistente"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/> -->
+	  	</data>  
+</openerp>
